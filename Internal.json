@@ -19,6 +19,48 @@
       }
     }
   },
+  "MeshCube|2022-07-06T12:47:35.715Z|62658": {
+    "ƒ.MeshCube": {
+      "idResource": "MeshCube|2022-07-06T12:47:35.715Z|62658",
+      "name": "Cube",
+      "type": "MeshCube"
+    }
+  },
+  "Material|2022-07-06T12:47:42.924Z|59459": {
+    "ƒ.Material": {
+      "name": "Wood",
+      "idResource": "Material|2022-07-06T12:47:42.924Z|59459",
+      "shader": "ShaderFlat",
+      "coat": {
+        "ƒ.CoatRemissive": {
+          "color": "[0.403921568627451, 0.29411764705882354, 0.13333333333333333, 1]",
+          "diffuse": 1,
+          "specular": 0
+        }
+      }
+    }
+  },
+  "Material|2022-07-07T10:22:28.373Z|38989": {
+    "ƒ.Material": {
+      "name": "Snake",
+      "idResource": "Material|2022-07-07T10:22:28.373Z|38989",
+      "shader": "ShaderFlat",
+      "coat": {
+        "ƒ.CoatRemissive": {
+          "color": "[0.24313725490196078, 0.9254901960784314, 0.19607843137254902, 1]",
+          "diffuse": 1,
+          "specular": 0
+        }
+      }
+    }
+  },
+  "MeshPyramid|2022-07-07T10:34:45.339Z|12822": {
+    "ƒ.MeshPyramid": {
+      "idResource": "MeshPyramid|2022-07-07T10:34:45.339Z|12822",
+      "name": "Tail-End",
+      "type": "MeshPyramid"
+    }
+  },
   "Graph|2022-07-06T11:49:20.695Z|70691": {
     "ƒ.Graph": {
       "name": "Snake-3D",
@@ -28,13 +70,47 @@
           {
             "ƒ.ComponentLight": {
               "pivot": {
+                "translation": "[-5, -8, -20]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "light": {
+                "ƒ.LightDirectional": {
+                  "color": "[1, 1, 1, 1]"
+                }
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          },
+          {
+            "ƒ.ComponentLight": {
+              "pivot": {
+                "translation": "[9, 16, -11]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 1, 1]"
+              },
+              "light": {
+                "ƒ.LightDirectional": {
+                  "color": "[0.4117647058823529, 0.4117647058823529, 0.4117647058823529, 1]"
+                }
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          },
+          {
+            "ƒ.ComponentLight": {
+              "pivot": {
                 "translation": "[0, 0, 0]",
                 "rotation": "[0, 0, 0]",
                 "scaling": "[1, 1, 1]"
               },
               "light": {
                 "ƒ.LightAmbient": {
-                  "color": "[1, 1, 1, 1]"
+                  "color": "[0.0784313725490196, 0.0784313725490196, 0.0784313725490196, 1]"
                 }
               },
               "Component": {
@@ -563,7 +639,50 @@
             "name": "Food",
             "active": true,
             "components": {},
-            "children": []
+            "children": [
+              {
+                "ƒ.Node": {
+                  "name": "Init-Food",
+                  "active": true,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshSphere|2022-07-07T11:20:54.463Z|48995",
+                          "pivot": {
+                            "translation": "[0, 4, 0.4000000059604645]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[0.7999999523162842, 0.7999999523162842, 0.7999999523162842]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2022-07-07T11:21:31.656Z|51289"
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              }
+            ]
           }
         }
       ],
@@ -571,46 +690,34 @@
       "type": "Graph"
     }
   },
-  "MeshCube|2022-07-06T12:47:35.715Z|62658": {
-    "ƒ.MeshCube": {
-      "idResource": "MeshCube|2022-07-06T12:47:35.715Z|62658",
-      "name": "Cube",
-      "type": "MeshCube"
+  "MeshSphere|2022-07-07T11:20:54.463Z|48995": {
+    "ƒ.MeshSphere": {
+      "idResource": "MeshSphere|2022-07-07T11:20:54.463Z|48995",
+      "name": "Food",
+      "type": "MeshSphere",
+      "shape": {
+        "ƒ.Vector2": [
+          "[0, 0.5]",
+          "[0.5, 0]",
+          "[0, -0.5]"
+        ]
+      },
+      "longitudes": 4,
+      "latitudes": 2
     }
   },
-  "Material|2022-07-06T12:47:42.924Z|59459": {
+  "Material|2022-07-07T11:21:31.656Z|51289": {
     "ƒ.Material": {
-      "name": "Wood",
-      "idResource": "Material|2022-07-06T12:47:42.924Z|59459",
+      "name": "Red",
+      "idResource": "Material|2022-07-07T11:21:31.656Z|51289",
       "shader": "ShaderFlat",
       "coat": {
         "ƒ.CoatRemissive": {
-          "color": "[0.403921568627451, 0.29411764705882354, 0.13333333333333333, 1]",
+          "color": "[0.7254901960784313, 0.15294117647058825, 0.15294117647058825, 1]",
           "diffuse": 1,
           "specular": 0
         }
       }
-    }
-  },
-  "Material|2022-07-07T10:22:28.373Z|38989": {
-    "ƒ.Material": {
-      "name": "Snake",
-      "idResource": "Material|2022-07-07T10:22:28.373Z|38989",
-      "shader": "ShaderFlat",
-      "coat": {
-        "ƒ.CoatRemissive": {
-          "color": "[0.24313725490196078, 0.9254901960784314, 0.19607843137254902, 1]",
-          "diffuse": 1,
-          "specular": 0
-        }
-      }
-    }
-  },
-  "MeshPyramid|2022-07-07T10:34:45.339Z|12822": {
-    "ƒ.MeshPyramid": {
-      "idResource": "MeshPyramid|2022-07-07T10:34:45.339Z|12822",
-      "name": "Tail-End",
-      "type": "MeshPyramid"
     }
   }
 }
