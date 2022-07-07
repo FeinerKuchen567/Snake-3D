@@ -1,0 +1,3 @@
+*.tsbuildinfo
+old_Build/*
+assets/*
