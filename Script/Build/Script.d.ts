@@ -1,10 +1,20 @@
 declare namespace Script {
-    import ƒ = FudgeCore;
-    class CustomComponentScript extends ƒ.ComponentScript {
+    import fc = FudgeCore;
+    class BodyPart extends fc.ComponentScript {
         static readonly iSubclass: number;
-        message: string;
+        nextDirections: fc.Vector2[];
+        nextPoints: fc.Vector2[];
+        moveActive: boolean;
+        headDirection: fc.Vector2;
+        inTurn: boolean;
+        isTail: boolean;
+        rotation: number;
+        private direction;
+        private toNextPoint;
+        private speed;
         constructor();
         hndEvent: (_event: Event) => void;
+        private move;
     }
 }
 declare namespace Script {

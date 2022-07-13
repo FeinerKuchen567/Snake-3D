@@ -8038,13 +8038,29 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[8, 5, 0]",
+                            "translation": "[8, 4, 0]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
                           "Component": {
                             "active": true
                           }
+                        }
+                      }
+                    ],
+                    "BodyPart": [
+                      {
+                        "Script.BodyPart": {
+                          "active": true,
+                          "direction": {
+                            "x": 0,
+                            "y": 0
+                          },
+                          "toNextPoint": {
+                            "x": 0,
+                            "y": 0
+                          },
+                          "speed": 0.04
                         }
                       }
                     ]
@@ -8085,6 +8101,20 @@
                                   "active": true
                                 },
                                 "idMaterial": "Material|2022-07-08T12:28:57.788Z|81797"
+                              }
+                            }
+                          ],
+                          "ComponentTransform": [
+                            {
+                              "ƒ.ComponentTransform": {
+                                "local": {
+                                  "translation": "[0, 0, 0]",
+                                  "rotation": "[0, 0, 0]",
+                                  "scaling": "[1, 1, 1]"
+                                },
+                                "Component": {
+                                  "active": true
+                                }
                               }
                             }
                           ]
@@ -8129,6 +8159,20 @@
                                 "idMaterial": "Material|2022-07-08T12:28:57.788Z|81797"
                               }
                             }
+                          ],
+                          "ComponentTransform": [
+                            {
+                              "ƒ.ComponentTransform": {
+                                "local": {
+                                  "translation": "[0, 0, 0]",
+                                  "rotation": "[0, 0, 0]",
+                                  "scaling": "[1, 1, 1]"
+                                },
+                                "Component": {
+                                  "active": true
+                                }
+                              }
+                            }
                           ]
                         },
                         "children": []
@@ -8146,7 +8190,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[8, 6, 0]",
+                            "translation": "[0, 0, 0]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -8155,8 +8199,7 @@
                           }
                         }
                       }
-                    ],
-                    "ComponentCamera": []
+                    ]
                   },
                   "children": [
                     {
@@ -8194,6 +8237,108 @@
                                   "active": true
                                 },
                                 "idMaterial": "Material|2022-07-08T12:27:37.139Z|78760"
+                              }
+                            }
+                          ],
+                          "ComponentTransform": [
+                            {
+                              "ƒ.ComponentTransform": {
+                                "local": {
+                                  "translation": "[8, 6, 0]",
+                                  "rotation": "[0, 0, 0]",
+                                  "scaling": "[1, 1, 1]"
+                                },
+                                "Component": {
+                                  "active": true
+                                }
+                              }
+                            }
+                          ],
+                          "BodyPart": [
+                            {
+                              "Script.BodyPart": {
+                                "active": true,
+                                "direction": {
+                                  "x": 0,
+                                  "y": 0
+                                },
+                                "toNextPoint": {
+                                  "x": 0,
+                                  "y": 0
+                                },
+                                "speed": 0.04
+                              }
+                            }
+                          ]
+                        },
+                        "children": []
+                      }
+                    },
+                    {
+                      "ƒ.Node": {
+                        "name": "Body-01",
+                        "active": true,
+                        "components": {
+                          "ComponentMesh": [
+                            {
+                              "ƒ.ComponentMesh": {
+                                "idMesh": "MeshCube|2022-07-06T12:47:35.715Z|62658",
+                                "pivot": {
+                                  "translation": "[0, 0, 0.4999999403953552]",
+                                  "rotation": "[0, 0, 0]",
+                                  "scaling": "[1, 1, 1]"
+                                },
+                                "Component": {
+                                  "active": true
+                                }
+                              }
+                            }
+                          ],
+                          "ComponentMaterial": [
+                            {
+                              "ƒ.ComponentMaterial": {
+                                "sortForAlpha": false,
+                                "clrPrimary": "[1, 1, 1, 1]",
+                                "clrSecondary": "[1, 1, 1, 1]",
+                                "pivot": {
+                                  "translation": "[0, 0]",
+                                  "rotation": 0,
+                                  "scaling": "[1, 1]"
+                                },
+                                "Component": {
+                                  "active": true
+                                },
+                                "idMaterial": "Material|2022-07-08T12:27:37.139Z|78760"
+                              }
+                            }
+                          ],
+                          "ComponentTransform": [
+                            {
+                              "ƒ.ComponentTransform": {
+                                "local": {
+                                  "translation": "[8, 5, 0]",
+                                  "rotation": "[0, 0, 0]",
+                                  "scaling": "[1, 1, 1]"
+                                },
+                                "Component": {
+                                  "active": true
+                                }
+                              }
+                            }
+                          ],
+                          "BodyPart": [
+                            {
+                              "Script.BodyPart": {
+                                "active": true,
+                                "direction": {
+                                  "x": 0,
+                                  "y": 0
+                                },
+                                "toNextPoint": {
+                                  "x": 0,
+                                  "y": 0
+                                },
+                                "speed": 0.04
                               }
                             }
                           ]
