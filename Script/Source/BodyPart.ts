@@ -15,7 +15,7 @@ namespace Script {
 
     // Für den "Tail"
     public isTail: boolean = false;
-    public rotation: number = 0;
+    public nextRotation: number[] = [];
 
     private direction: fc.Vector2 = fc.Vector2.ZERO();
     private toNextPoint: fc.Vector2 = fc.Vector2.ZERO();
@@ -24,6 +24,7 @@ namespace Script {
 
     constructor() {
       super();
+      this.serialize();
 
       // Don't start when running in editor
       if (fc.Project.mode == fc.MODE.EDITOR)
@@ -45,35 +46,45 @@ namespace Script {
     private move = (_event: Event): void => {
       let posBodyPart: fc.Vector2 = this.node.mtxLocal.translation.toVector2();
 
-      // TODO: Fix Bug where Body runns away, when turning to much!
-
       if(this.moveActive) {
+        // Wenn Snake aus dem Stillstand kommt
+        if(this.direction.equals(fc.Vector2.ZERO())){
+          if(this.nextDirections[0] !== undefined)
+            this.direction = this.nextDirections.shift();
+          if(this.nextPoints[0] !== undefined)
+            this.toNextPoint = this.nextPoints.shift();
+        }
+
+        // Wenn Snake um die Kurve geht. So lange bis der Bodypart den ehmaligen Punkt vom Head erreicht hat 
         if(this.inTurn){
-          if(this.direction.equals(fc.Vector2.ZERO())){
-            if(this.nextDirections[0] !== undefined)
-              this.direction = this.nextDirections.shift();
+          if(this.toNextPoint.equals(fc.Vector2.ZERO())){
             if(this.nextPoints[0] !== undefined)
               this.toNextPoint = this.nextPoints.shift();
           }
-          
+
           if(this.toNextPoint.x.toFixed(2) == posBodyPart.x.toFixed(2) && this.toNextPoint.y.toFixed(2) == posBodyPart.y.toFixed(2)){
-            this.inTurn = false;
-            this.direction = fc.Vector2.ZERO();
-            this.toNextPoint = fc.Vector2.ZERO();
-            this.node.mtxLocal.translate(fc.Vector2.SCALE(this.headDirection, this.speed).toVector3());
+
+            if(this.nextDirections[0] != undefined)
+              this.direction = this.nextDirections.shift();
+            else 
+              this.direction = this.headDirection;
+            
+            if(this.nextPoints[0] !== undefined)
+              this.toNextPoint = this.nextPoints.shift();
+            else {
+              this.inTurn = false;
+              this.toNextPoint = fc.Vector2.ZERO();
+            }
 
             if(this.isTail) {
-              this.node.getChild(0).mtxLocal.rotateZ(this.rotation);
-              this.node.getChild(1).mtxLocal.rotateZ(this.rotation);
+              let rotation: number = this.nextRotation.shift();
+              this.node.getChild(0).mtxLocal.rotateZ(rotation);
+              this.node.getChild(1).mtxLocal.rotateZ(rotation);
             }
           }
-          else {
-            this.node.mtxLocal.translate(fc.Vector2.SCALE(this.direction, this.speed).toVector3());
-          }
         }
-        else {
-          this.node.mtxLocal.translate(fc.Vector2.SCALE(this.headDirection, this.speed).toVector3());
-        }
+
+        this.node.mtxLocal.translate(fc.Vector2.SCALE(this.direction, this.speed).toVector3());
       }
       else {
         let nearestGridPoint: fc.Vector2 = new fc.Vector2(Math.round(posBodyPart.x), Math.round(posBodyPart.y));

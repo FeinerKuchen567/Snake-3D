@@ -8,7 +8,7 @@ declare namespace Script {
         headDirection: fc.Vector2;
         inTurn: boolean;
         isTail: boolean;
-        rotation: number;
+        nextRotation: number[];
         private direction;
         private toNextPoint;
         private speed;

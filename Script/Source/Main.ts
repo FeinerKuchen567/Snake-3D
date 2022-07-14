@@ -82,7 +82,9 @@ namespace Script {
         head.mtxLocal.translation = nearestGridPoint.toVector3();
     }
 
+    // Übergabe der neuen Richtung an ComponentScript einzelner Body-Teile + Tail 
     if(!direction.equals(directionOld)){
+      // Body 
       body.getChildren().forEach(function (bodyPart: fc.Node){
         let Script: BodyPart = bodyPart.getComponent(BodyPart);
         Script.headDirection = direction;
@@ -99,6 +101,7 @@ namespace Script {
         }
       });
 
+      // Tail
       let tailScript: BodyPart = tail.getComponent(BodyPart);
       tailScript.headDirection = direction;
       tailScript.isTail = true;
@@ -111,7 +114,7 @@ namespace Script {
         if (faceDirection != faceDirectionOld) {
           tailScript.nextPoints.push(posHead.toVector2());
           tailScript.inTurn = true; 
-          tailScript.rotation = faceDirectionOld - faceDirection;
+          tailScript.nextRotation.push(faceDirectionOld - faceDirection);
         }
       }
     }

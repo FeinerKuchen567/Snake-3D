@@ -14,12 +14,13 @@ var Script;
         inTurn = false;
         // Für den "Tail"
         isTail = false;
-        rotation = 0;
+        nextRotation = [];
         direction = fc.Vector2.ZERO();
         toNextPoint = fc.Vector2.ZERO();
         speed = 0.04;
         constructor() {
             super();
+            this.serialize();
             // Don't start when running in editor
             if (fc.Project.mode == fc.MODE.EDITOR)
                 return;
@@ -36,32 +37,39 @@ var Script;
         };
         move = (_event) => {
             let posBodyPart = this.node.mtxLocal.translation.toVector2();
-            // TODO: Fix Bug where Body runns away, when turning to much!
             if (this.moveActive) {
+                // Wenn Snake aus dem Stillstand kommt
+                if (this.direction.equals(fc.Vector2.ZERO())) {
+                    if (this.nextDirections[0] !== undefined)
+                        this.direction = this.nextDirections.shift();
+                    if (this.nextPoints[0] !== undefined)
+                        this.toNextPoint = this.nextPoints.shift();
+                }
+                // Wenn Snake um die Kurve geht. So lange bis der Bodypart den ehmaligen Punkt vom Head erreicht hat 
                 if (this.inTurn) {
-                    if (this.direction.equals(fc.Vector2.ZERO())) {
-                        if (this.nextDirections[0] !== undefined)
-                            this.direction = this.nextDirections.shift();
+                    if (this.toNextPoint.equals(fc.Vector2.ZERO())) {
                         if (this.nextPoints[0] !== undefined)
                             this.toNextPoint = this.nextPoints.shift();
                     }
                     if (this.toNextPoint.x.toFixed(2) == posBodyPart.x.toFixed(2) && this.toNextPoint.y.toFixed(2) == posBodyPart.y.toFixed(2)) {
-                        this.inTurn = false;
-                        this.direction = fc.Vector2.ZERO();
-                        this.toNextPoint = fc.Vector2.ZERO();
-                        this.node.mtxLocal.translate(fc.Vector2.SCALE(this.headDirection, this.speed).toVector3());
+                        if (this.nextDirections[0] != undefined)
+                            this.direction = this.nextDirections.shift();
+                        else
+                            this.direction = this.headDirection;
+                        if (this.nextPoints[0] !== undefined)
+                            this.toNextPoint = this.nextPoints.shift();
+                        else {
+                            this.inTurn = false;
+                            this.toNextPoint = fc.Vector2.ZERO();
+                        }
                         if (this.isTail) {
-                            this.node.getChild(0).mtxLocal.rotateZ(this.rotation);
-                            this.node.getChild(1).mtxLocal.rotateZ(this.rotation);
+                            let rotation = this.nextRotation.shift();
+                            this.node.getChild(0).mtxLocal.rotateZ(rotation);
+                            this.node.getChild(1).mtxLocal.rotateZ(rotation);
                         }
                     }
-                    else {
-                        this.node.mtxLocal.translate(fc.Vector2.SCALE(this.direction, this.speed).toVector3());
-                    }
                 }
-                else {
-                    this.node.mtxLocal.translate(fc.Vector2.SCALE(this.headDirection, this.speed).toVector3());
-                }
+                this.node.mtxLocal.translate(fc.Vector2.SCALE(this.direction, this.speed).toVector3());
             }
             else {
                 let nearestGridPoint = new fc.Vector2(Math.round(posBodyPart.x), Math.round(posBodyPart.y));
@@ -144,7 +152,9 @@ var Script;
             if (!direction.equals(directionOld) || direction.magnitudeSquared == 0)
                 head.mtxLocal.translation = nearestGridPoint.toVector3();
         }
+        // Übergabe der neuen Richtung an ComponentScript einzelner Body-Teile + Tail 
         if (!direction.equals(directionOld)) {
+            // Body 
             body.getChildren().forEach(function (bodyPart) {
                 let Script = bodyPart.getComponent(Script_1.BodyPart);
                 Script.headDirection = direction;
@@ -159,6 +169,7 @@ var Script;
                     }
                 }
             });
+            // Tail
             let tailScript = tail.getComponent(Script_1.BodyPart);
             tailScript.headDirection = direction;
             tailScript.isTail = true;
@@ -170,7 +181,7 @@ var Script;
                 if (faceDirection != faceDirectionOld) {
                     tailScript.nextPoints.push(posHead.toVector2());
                     tailScript.inTurn = true;
-                    tailScript.rotation = faceDirectionOld - faceDirection;
+                    tailScript.nextRotation.push(faceDirectionOld - faceDirection);
                 }
             }
         }
