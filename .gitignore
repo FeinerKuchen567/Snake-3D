@@ -1,5 +1,5 @@
 *.tsbuildinfo
 old_Build/*
-assets/grass.jpg
-assets/wall.png
-assets/noTex.png
+assets/texture/grass.jpg
+assets/texture/wall.png
+assets/texture/noTex.png

@@ -24,7 +24,7 @@ Dieses Repository dient dem Abgabe-Projekt "Snake 3D" für das Modul P.R.I.M.A d
 |  3 | Editor              | Positionierung der 3-Prerson-Kamera kann mit Coding schneller neu angepasst werden als mit dem Vidual Editor        |
 |  4 | Scriptcomponents    | Das "hinterher Laufen " des Körpers ist durch eigenes Skript besser umsetzbar als duch bspw. eine Foreach-Schleife  |
 |  5 | Extend              | Derive classes from FudgeCore and explain if that was useful in your context or not and why.                        |
-|  6 | Sound               | Use sounds and explain your choice of sounds and placement in respect to the user's perception.                     |
+|  6 | Sound               | Thema-Sound ist direkt bei der Kamera positioniert umd es durchgehend zu hören zu können.                           |
 |  7 | VUI                 | Create a virtual user interface using the interface controller and mutables. Explain the interface.                 |
 |  8 | Event-System        | Use the event system to send messages through graphs and explain if that was useful in your context or not and why. |
 |  9 | External Data       | Create a configuration file your application loads and adjusts to the content. Explain your choice of parameters.   |

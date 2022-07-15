@@ -94,11 +94,11 @@
   },
   "TextureImage|2022-07-08T12:29:11.772Z|19965": {
     "ƒ.TextureImage": {
-      "url": "assets\\Head.png",
+      "url": "assets\\texture\\Head.png",
       "type": "TextureImage",
       "Texture": {
         "idResource": "TextureImage|2022-07-08T12:29:11.772Z|19965",
-        "name": "assets\\Head.png",
+        "name": "Head.png",
         "mipmap": "CRISP"
       }
     }
@@ -120,13 +120,21 @@
   },
   "TextureImage|2022-07-08T12:27:33.048Z|55060": {
     "ƒ.TextureImage": {
-      "url": "assets\\Body.png",
+      "url": "assets\\texture\\Body.png",
       "type": "TextureImage",
       "Texture": {
         "idResource": "TextureImage|2022-07-08T12:27:33.048Z|55060",
-        "name": "assets\\Body.png",
+        "name": "Body.png",
         "mipmap": "CRISP"
       }
+    }
+  },
+  "Audio|2022-07-15T20:01:05.504Z|33783": {
+    "ƒ.Audio": {
+      "url": "assets\\sounds\\Snake III - Theme Song.mp3",
+      "idResource": "Audio|2022-07-15T20:01:05.504Z|33783",
+      "name": "assets\\sounds\\Snake III - Theme Song.mp3",
+      "type": "Audio"
     }
   },
   "Graph|2022-07-06T11:49:20.695Z|70691": {
@@ -7911,6 +7919,24 @@
                           }
                         }
                       }
+                    ],
+                    "ComponentAudio": [
+                      {
+                        "ƒ.ComponentAudio": {
+                          "active": true,
+                          "idResource": "Audio|2022-07-15T20:01:05.504Z|33783",
+                          "playing": true,
+                          "loop": true,
+                          "volume": 1
+                        }
+                      }
+                    ],
+                    "ComponentAudioListener": [
+                      {
+                        "ƒ.ComponentAudioListener": {
+                          "active": true
+                        }
+                      }
                     ]
                   },
                   "children": [
@@ -8052,6 +8078,13 @@
                       {
                         "Script.BodyPart": {
                           "active": true,
+                          "moveActive": false,
+                          "headDirection": {
+                            "x": 0,
+                            "y": 0
+                          },
+                          "inTurn": false,
+                          "isTail": false,
                           "direction": {
                             "x": 0,
                             "y": 0
@@ -8258,6 +8291,13 @@
                             {
                               "Script.BodyPart": {
                                 "active": true,
+                                "moveActive": false,
+                                "headDirection": {
+                                  "x": 0,
+                                  "y": 0
+                                },
+                                "inTurn": false,
+                                "isTail": false,
                                 "direction": {
                                   "x": 0,
                                   "y": 0
@@ -8330,6 +8370,13 @@
                             {
                               "Script.BodyPart": {
                                 "active": true,
+                                "moveActive": false,
+                                "headDirection": {
+                                  "x": 0,
+                                  "y": 0
+                                },
+                                "inTurn": false,
+                                "isTail": false,
                                 "direction": {
                                   "x": 0,
                                   "y": 0
@@ -8430,11 +8477,11 @@
   },
   "TextureImage|2022-07-08T12:22:08.057Z|90169": {
     "ƒ.TextureImage": {
-      "url": "assets\\grass.png",
+      "url": "assets\\texture\\grass.png",
       "type": "TextureImage",
       "Texture": {
         "idResource": "TextureImage|2022-07-08T12:22:08.057Z|90169",
-        "name": "assets\\grass.png",
+        "name": "grass.png",
         "mipmap": "CRISP"
       }
     }

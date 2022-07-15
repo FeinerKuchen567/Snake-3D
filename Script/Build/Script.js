@@ -107,6 +107,7 @@ var Script;
         head = snake.getChildrenByName("Head")[0];
         body = snake.getChildrenByName("Body")[0];
         tail = snake.getChildrenByName("Tail")[0];
+        fc.AudioManager.default.listenTo(graph);
         fc.Loop.addEventListener("loopFrame" /* fc.EVENT.LOOP_FRAME */, update);
         fc.Loop.start(); // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
