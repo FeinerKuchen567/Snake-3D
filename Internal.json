@@ -129,14 +129,6 @@
       }
     }
   },
-  "Audio|2022-07-15T20:01:05.504Z|33783": {
-    "ƒ.Audio": {
-      "url": "assets\\sounds\\Snake III - Theme Song.mp3",
-      "idResource": "Audio|2022-07-15T20:01:05.504Z|33783",
-      "name": "assets\\sounds\\Snake III - Theme Song.mp3",
-      "type": "Audio"
-    }
-  },
   "Graph|2022-07-06T11:49:20.695Z|70691": {
     "ƒ.Graph": {
       "name": "Snake-3D",
@@ -7924,8 +7916,8 @@
                       {
                         "ƒ.ComponentAudio": {
                           "active": true,
-                          "idResource": "Audio|2022-07-15T20:01:05.504Z|33783",
-                          "playing": true,
+                          "idResource": "Audio|2022-07-16T12:04:50.337Z|90448",
+                          "playing": false,
                           "loop": true,
                           "volume": 1
                         }
@@ -8092,8 +8084,7 @@
                           "toNextPoint": {
                             "x": 0,
                             "y": 0
-                          },
-                          "speed": 0.04
+                          }
                         }
                       }
                     ]
@@ -8305,8 +8296,7 @@
                                 "toNextPoint": {
                                   "x": 0,
                                   "y": 0
-                                },
-                                "speed": 0.04
+                                }
                               }
                             }
                           ]
@@ -8384,8 +8374,7 @@
                                 "toNextPoint": {
                                   "x": 0,
                                   "y": 0
-                                },
-                                "speed": 0.04
+                                }
                               }
                             }
                           ]
@@ -16514,6 +16503,14 @@
       ],
       "idResource": "Graph|2022-07-08T12:06:23.590Z|23734",
       "type": "Graph"
+    }
+  },
+  "Audio|2022-07-16T12:04:50.337Z|90448": {
+    "ƒ.Audio": {
+      "url": "assets\\sounds\\Snake_III-Theme_Song.wav",
+      "idResource": "Audio|2022-07-16T12:04:50.337Z|90448",
+      "name": "assets\\sounds\\Snake_III-Theme_Song.wav",
+      "type": "Audio"
     }
   }
 }

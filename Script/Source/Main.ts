@@ -39,6 +39,10 @@ namespace Script {
     head = snake.getChildrenByName("Head")[0];
     body = snake.getChildrenByName("Body")[0];
     tail = snake.getChildrenByName("Tail")[0];
+    
+    let themaSound: fc.ComponentAudio = head.getComponent(fc.ComponentAudio);
+    if(!themaSound.isPlaying)
+      themaSound.play(true);
 
     fc.AudioManager.default.listenTo(graph);
 

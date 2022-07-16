@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
+<head>
         <title>Snake-3D</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="styles.css" />
@@ -34,7 +34,16 @@
                 // show dialog for startup
                 let dialog;
                 function init(_event) {
-                    startInteractiveViewport();
+                    dialog = document.querySelector("dialog");
+                    dialog.querySelector("h1").textContent = document.title;
+                    dialog.querySelector("p").textContent = "Klicken um Spiel zu Starten!"
+                    dialog.addEventListener("click", function (_event) {
+                        // @ts-ignore until HTMLDialog is implemented by all browsers and available in dom.d.ts
+                        dialog.close();
+                        startInteractiveViewport();
+                    });
+                    //@ts-ignore
+                    dialog.showModal();
                 }
                 // setup and start interactive viewport
                 async function startInteractiveViewport() {
@@ -68,5 +77,6 @@
         <!--Canvas for FUDGE to render to-->
         <canvas class="fullscreen">
         </canvas>
-    </body>
+    
+</body>
 </html>
