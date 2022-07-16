@@ -2,6 +2,10 @@ namespace Script {
   import fc = FudgeCore;
   fc.Debug.info("Main Program Template running!");
 
+  interface Config {
+    [key: string]: number | string | Config;
+  }
+
   let viewport: fc.Viewport;
   let snake: fc.Node;
   let head: fc.Node;
@@ -11,10 +15,11 @@ namespace Script {
   let direction: fc.Vector2 = fc.Vector2.ZERO();
   let directionOld: fc.Vector2 = fc.Vector2.ZERO();
   let faceDirection: number = 0;
-  let speed: number = 0.04;
-  document.addEventListener("interactiveViewportStarted", <EventListener>start);
+  let config: Config;
 
-  function start(_event: CustomEvent): void {
+  document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
+
+  async function start(_event: CustomEvent): Promise<void> {
     viewport = _event.detail;
 
     // Positionierung der Kamera
@@ -24,6 +29,10 @@ namespace Script {
     // Grid und Snake holen
     let graph: fc.Node = viewport.getBranch();
     grid = graph.getChildrenByName("Grid")[0].getChildrenByName("Ground")[0];
+    
+    // Config laden
+    let response: Response = await fetch("config.json");
+    config = await response.json();
 
     // Snake Teile holen
     snake = graph.getChildrenByName("Snake")[0];
@@ -41,7 +50,7 @@ namespace Script {
     // fc.Physics.simulate();  // if physics is included and used
     let posHead: fc.Vector3 = head.mtxLocal.translation;
     let nearestGridPoint: fc.Vector2 = new fc.Vector2(Math.round(posHead.x), Math.round(posHead.y));
-    let nearGridPoint: boolean = posHead.toVector2().equals(nearestGridPoint, 2 * speed);
+    let nearGridPoint: boolean = posHead.toVector2().equals(nearestGridPoint, 2 * <number>config["speed"]);
     let faceDirectionOld: number = faceDirection;
 
     if (nearGridPoint) {
@@ -128,7 +137,7 @@ namespace Script {
     }
     
     // Snake (Kopf) bewegen
-    head.mtxLocal.translate(fc.Vector2.SCALE(direction, speed).toVector3());
+    head.mtxLocal.translate(fc.Vector2.SCALE(direction, <number>config["speed"]).toVector3());
 
     viewport.draw();
     //fc.AudioManager.default.update();

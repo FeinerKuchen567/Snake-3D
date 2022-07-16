@@ -25,11 +25,11 @@ Dieses Repository dient dem Abgabe-Projekt "Snake 3D" für das Modul P.R.I.M.A d
 |  4 | Scriptcomponents    | Das "hinterher Laufen " des Körpers ist durch eigenes Skript besser umsetzbar als duch bspw. eine Foreach-Schleife  |
 |  5 | Extend              | Derive classes from FudgeCore and explain if that was useful in your context or not and why.                        |
 |  6 | Sound               | Thema-Sound ist direkt bei der Kamera positioniert umd es durchgehend zu hören zu können.                           |
-|  7 | VUI                 | Create a virtual user interface using the interface controller and mutables. Explain the interface.                 |
-|  8 | Event-System        | Use the event system to send messages through graphs and explain if that was useful in your context or not and why. |
-|  9 | External Data       | Create a configuration file your application loads and adjusts to the content. Explain your choice of parameters.   |
-|  A | Light               | Explain your choice of lights in your graphs (1)                                                                    |
-|  B | Physics             | Add rigidbody components and work with collisions (1) and/or forces and torques (1) and/or joints (1)               |
-|  C | Net                 | Add multiplayer functionality via network (3)                                                                       |
-|  D | State Machines      | Create autonomous entities using the StateMachine (1) and/or ComponentStateMachine (1) defined in FudgeAid          |
+|  7 | VUI                 |  |
+|  8 | Event-System        |  |
+|  9 | External Data       | Speed-Faktor für Snake aus Config holen,                                                                            |
+|  A | Light               | Zei gegenüber liegende "Directionel" Lichter die alles beleuchten, aber doch Kanten zu sehen sind                   |
+|  B | Physics             | ---                                                                                                                 |
+|  C | Net                 | ---                                                                                                                 |
+|  D | State Machines      | ---                                                                                                                 |
 |  E | Animation           | Animate using the animation system of FudgeCore (1) and/or Sprites (1) as defined in FudgeAid                       |

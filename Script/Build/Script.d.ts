@@ -11,9 +11,10 @@ declare namespace Script {
         nextRotation: number[];
         private direction;
         private toNextPoint;
-        private speed;
+        private config;
         constructor();
         hndEvent: (_event: Event) => void;
+        private loadConfig;
         private move;
     }
 }

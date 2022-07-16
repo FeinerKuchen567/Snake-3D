@@ -17,7 +17,7 @@ var Script;
         nextRotation = [];
         direction = fc.Vector2.ZERO();
         toNextPoint = fc.Vector2.ZERO();
-        speed = 0.04;
+        config;
         constructor() {
             super();
             this.serialize();
@@ -31,10 +31,15 @@ var Script;
         hndEvent = (_event) => {
             switch (_event.type) {
                 case "componentAdd" /* fc.EVENT.COMPONENT_ADD */:
+                    this.loadConfig();
                     this.node.addEventListener("renderPrepare" /* fc.EVENT.RENDER_PREPARE */, this.move);
                     break;
             }
         };
+        async loadConfig() {
+            let response = await fetch("config.json");
+            this.config = await response.json();
+        }
         move = (_event) => {
             let posBodyPart = this.node.mtxLocal.translation.toVector2();
             if (this.moveActive) {
@@ -69,7 +74,7 @@ var Script;
                         }
                     }
                 }
-                this.node.mtxLocal.translate(fc.Vector2.SCALE(this.direction, this.speed).toVector3());
+                this.node.mtxLocal.translate(fc.Vector2.SCALE(this.direction, this.config["speed"]).toVector3());
             }
             else {
                 let nearestGridPoint = new fc.Vector2(Math.round(posBodyPart.x), Math.round(posBodyPart.y));
@@ -92,9 +97,9 @@ var Script;
     let direction = fc.Vector2.ZERO();
     let directionOld = fc.Vector2.ZERO();
     let faceDirection = 0;
-    let speed = 0.04;
+    let config;
     document.addEventListener("interactiveViewportStarted", start);
-    function start(_event) {
+    async function start(_event) {
         viewport = _event.detail;
         // Positionierung der Kamera
         viewport.camera.mtxPivot.translate(new fc.Vector3(0, -5, 10));
@@ -102,6 +107,9 @@ var Script;
         // Grid und Snake holen
         let graph = viewport.getBranch();
         grid = graph.getChildrenByName("Grid")[0].getChildrenByName("Ground")[0];
+        // Config laden
+        let response = await fetch("config.json");
+        config = await response.json();
         // Snake Teile holen
         snake = graph.getChildrenByName("Snake")[0];
         head = snake.getChildrenByName("Head")[0];
@@ -115,7 +123,7 @@ var Script;
         // fc.Physics.simulate();  // if physics is included and used
         let posHead = head.mtxLocal.translation;
         let nearestGridPoint = new fc.Vector2(Math.round(posHead.x), Math.round(posHead.y));
-        let nearGridPoint = posHead.toVector2().equals(nearestGridPoint, 2 * speed);
+        let nearGridPoint = posHead.toVector2().equals(nearestGridPoint, 2 * config["speed"]);
         let faceDirectionOld = faceDirection;
         if (nearGridPoint) {
             directionOld = direction.clone;
@@ -192,7 +200,7 @@ var Script;
             head.getChild(1).mtxLocal.rotateZ(faceDirectionOld - faceDirection);
         }
         // Snake (Kopf) bewegen
-        head.mtxLocal.translate(fc.Vector2.SCALE(direction, speed).toVector3());
+        head.mtxLocal.translate(fc.Vector2.SCALE(direction, config["speed"]).toVector3());
         viewport.draw();
         //fc.AudioManager.default.update();
     }

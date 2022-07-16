@@ -1,12 +1,14 @@
 namespace Script {
   import fc = FudgeCore;
   fc.Project.registerScriptNamespace(Script);  // Register the namespace to FUDGE for serialization
-
+  interface Config {
+    [key: string]: number | string | Config;
+  }
   export class BodyPart extends fc.ComponentScript {
     // Register the script as component for use in the editor via drag&drop
     public static readonly iSubclass: number = fc.Component.registerSubclass(BodyPart);
     // Properties may be mutated by users in the editor via the automatically created user interface
-
+    
     public nextDirections: fc.Vector2[] = [];
     public nextPoints: fc.Vector2[] = [];
     public moveActive: boolean = false;
@@ -19,12 +21,12 @@ namespace Script {
 
     private direction: fc.Vector2 = fc.Vector2.ZERO();
     private toNextPoint: fc.Vector2 = fc.Vector2.ZERO();
-
-    private speed: number = 0.04;
+    private config: Config;
 
     constructor() {
       super();
       this.serialize();
+      
 
       // Don't start when running in editor
       if (fc.Project.mode == fc.MODE.EDITOR)
@@ -38,9 +40,15 @@ namespace Script {
     public hndEvent = (_event: Event): void => {
       switch (_event.type) {
         case fc.EVENT.COMPONENT_ADD:
+          this.loadConfig();
           this.node.addEventListener(fc.EVENT.RENDER_PREPARE, this.move);
           break;
       }
+    }
+
+    private async loadConfig(): Promise<void> {
+      let response: Response = await fetch("config.json");
+      this.config = await response.json();
     }
 
     private move = (_event: Event): void => {
@@ -84,7 +92,7 @@ namespace Script {
           }
         }
 
-        this.node.mtxLocal.translate(fc.Vector2.SCALE(this.direction, this.speed).toVector3());
+        this.node.mtxLocal.translate(fc.Vector2.SCALE(this.direction, <number>this.config["speed"]).toVector3());
       }
       else {
         let nearestGridPoint: fc.Vector2 = new fc.Vector2(Math.round(posBodyPart.x), Math.round(posBodyPart.y));
