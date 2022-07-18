@@ -12,10 +12,15 @@ namespace Script {
   let body: fc.Node 
   let tail: fc.Node 
   let grid: fc.Node;
+
   let direction: fc.Vector2 = fc.Vector2.ZERO();
   let directionOld: fc.Vector2 = fc.Vector2.ZERO();
   let faceDirection: number = 0;
+
+  let themaSound: fc.ComponentAudio;
+
   let config: Config;
+  let gameState: GameState;
 
   document.addEventListener("interactiveViewportStarted", <EventListener><unknown>start);
 
@@ -34,13 +39,15 @@ namespace Script {
     let response: Response = await fetch("config.json");
     config = await response.json();
 
+    gameState = new GameState();
+
     // Snake Teile holen
     snake = graph.getChildrenByName("Snake")[0];
     head = snake.getChildrenByName("Head")[0];
     body = snake.getChildrenByName("Body")[0];
     tail = snake.getChildrenByName("Tail")[0];
     
-    let themaSound: fc.ComponentAudio = head.getComponent(fc.ComponentAudio);
+    themaSound = head.getComponent(fc.ComponentAudio);
     if(!themaSound.isPlaying)
       themaSound.play(true);
 
@@ -142,6 +149,9 @@ namespace Script {
     
     // Snake (Kopf) bewegen
     head.mtxLocal.translate(fc.Vector2.SCALE(direction, <number>config["speed"]).toVector3());
+
+    // User Interface
+    themaSound.volume = gameState.musicVolume;
 
     viewport.draw();
     //fc.AudioManager.default.update();

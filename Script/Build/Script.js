@@ -85,6 +85,21 @@ var Script;
     Script.BodyPart = BodyPart;
 })(Script || (Script = {}));
 var Script;
+(function (Script) {
+    var fc = FudgeCore;
+    var fUi = FudgeUserInterface;
+    class GameState extends fc.Mutable {
+        musicVolume = 1;
+        constructor() {
+            super();
+            let domVui = document.querySelector("div#vui");
+            new fUi.Controller(this, domVui);
+        }
+        reduceMutator(_mutator) { }
+    }
+    Script.GameState = GameState;
+})(Script || (Script = {}));
+var Script;
 (function (Script_1) {
     var fc = FudgeCore;
     fc.Debug.info("Main Program Template running!");
@@ -97,7 +112,9 @@ var Script;
     let direction = fc.Vector2.ZERO();
     let directionOld = fc.Vector2.ZERO();
     let faceDirection = 0;
+    let themaSound;
     let config;
+    let gameState;
     document.addEventListener("interactiveViewportStarted", start);
     async function start(_event) {
         viewport = _event.detail;
@@ -110,12 +127,13 @@ var Script;
         // Config laden
         let response = await fetch("config.json");
         config = await response.json();
+        gameState = new Script_1.GameState();
         // Snake Teile holen
         snake = graph.getChildrenByName("Snake")[0];
         head = snake.getChildrenByName("Head")[0];
         body = snake.getChildrenByName("Body")[0];
         tail = snake.getChildrenByName("Tail")[0];
-        let themaSound = head.getComponent(fc.ComponentAudio);
+        themaSound = head.getComponent(fc.ComponentAudio);
         if (!themaSound.isPlaying)
             themaSound.play(true);
         fc.AudioManager.default.listenTo(graph);
@@ -204,6 +222,8 @@ var Script;
         }
         // Snake (Kopf) bewegen
         head.mtxLocal.translate(fc.Vector2.SCALE(direction, config["speed"]).toVector3());
+        // User Interface
+        themaSound.volume = gameState.musicVolume;
         viewport.draw();
         //fc.AudioManager.default.update();
     }

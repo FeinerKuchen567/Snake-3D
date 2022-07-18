@@ -19,4 +19,12 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    import fc = FudgeCore;
+    class GameState extends fc.Mutable {
+        musicVolume: number;
+        constructor();
+        protected reduceMutator(_mutator: fc.Mutator): void;
+    }
+}
+declare namespace Script {
 }

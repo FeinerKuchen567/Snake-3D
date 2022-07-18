@@ -14,8 +14,9 @@
         <!--Load FUDGE. You may want to download local copies to work offline and be independent from future changes! Developers working on FUDGE itself may want to create symlinks-->
         <!--script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/Core/Build/FudgeCore.js"></script>
         <script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/Aid/Build/FudgeAid.js"></script-->
-        <script type="text/javascript" src="./FUDGE/Core/FudgeCore-min.js"></script>
+        <script type="text/javascript" src="./FUDGE/Core/FudgeCore.js"></script>
         <script type="text/javascript" src="./FUDGE/Aid/FudgeAid.js"></script>
+        <script type="text/javascript" src="./FUDGE/UserInterface/FudgeUserInterface.js"></script>
 
         <!--Link internal resources. The editor only loads the first, but at runtime, multiple files can contribute-->
         <link type="resources" src="Internal.json" />
@@ -77,6 +78,11 @@
         <!--Canvas for FUDGE to render to-->
         <canvas class="fullscreen">
         </canvas>
-    
-</body>
+        <div id="vui">
+            <div id="volMusic">
+                <label for="musicVolume">Musik-Lautstärke:</label> 
+                <input key="musicVolume" type="range" value="1" min="0" max="1" step="0.01" />
+            </div> 
+        </div>
+    </body>
 </html>

@@ -8,7 +8,8 @@ html, body {
 
 body {
   background-image: url(./assets/Title_Image.jpg);
-  background-size: auto 100%;
+  background-size: 100vw 95vh;
+  background-repeat: no-repeat;
 }
 
 dialog { 
@@ -17,5 +18,26 @@ dialog {
 
 canvas.fullscreen { 
   width: 100vw; 
-  height: 100vh; 
+  height: 95vh; 
+}
+
+div#vui {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  height: 5vh;
+  width: 100vw;
+  bottom: 0;
+  color: white;
+  background-color: black;
+  padding-left: 20px;
+}
+
+div#volMusic {
+  display: flex;
+  align-items: unset; 
+}
+
+#volMusic label {
+  padding-right: 10px;
 }
