@@ -12,6 +12,7 @@ var Script;
         moveActive = false;
         headDirection = fc.Vector2.ZERO();
         inTurn = false;
+        toNearestGridPoint = false;
         // Für den "Tail"
         isTail = false;
         nextRotation = [];
@@ -42,6 +43,11 @@ var Script;
         }
         move = (_event) => {
             let posBodyPart = this.node.mtxLocal.translation.toVector2();
+            let nearestGridPoint = new fc.Vector2(Math.round(posBodyPart.x), Math.round(posBodyPart.y));
+            if (this.toNearestGridPoint) {
+                this.moveToNearestGridPoint(nearestGridPoint.toVector3());
+                this.toNearestGridPoint = false;
+            }
             if (this.moveActive) {
                 // Wenn Snake aus dem Stillstand kommt
                 if (this.direction.equals(fc.Vector2.ZERO())) {
@@ -76,11 +82,10 @@ var Script;
                 }
                 this.node.mtxLocal.translate(fc.Vector2.SCALE(this.direction, this.config["speed"]).toVector3());
             }
-            else {
-                let nearestGridPoint = new fc.Vector2(Math.round(posBodyPart.x), Math.round(posBodyPart.y));
-                this.node.mtxLocal.translation = nearestGridPoint.toVector3();
-            }
         };
+        moveToNearestGridPoint(_nearestGridPoint) {
+            this.node.mtxLocal.translation = _nearestGridPoint;
+        }
     }
     Script.BodyPart = BodyPart;
 })(Script || (Script = {}));
@@ -89,7 +94,7 @@ var Script;
     var fc = FudgeCore;
     var fUi = FudgeUserInterface;
     class GameState extends fc.Mutable {
-        musicVolume = 1;
+        musicVolume = 0.5;
         constructor() {
             super();
             let domVui = document.querySelector("div#vui");
@@ -100,12 +105,70 @@ var Script;
     Script.GameState = GameState;
 })(Script || (Script = {}));
 var Script;
+(function (Script) {
+    var fc = FudgeCore;
+    fc.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    class HeadPart extends fc.ComponentScript {
+        // Register the script as component for use in the editor via drag&drop
+        static iSubclass = fc.Component.registerSubclass(HeadPart);
+        // Properties may be mutated by users in the editor via the automatically created user interface
+        direction = fc.Vector2.ZERO();
+        newDirection = false;
+        newFaceDirection = 0;
+        toNearestGridPoint = false;
+        config;
+        constructor() {
+            super();
+            this.serialize();
+            // Don't start when running in editor
+            if (fc.Project.mode == fc.MODE.EDITOR)
+                return;
+            // Listen to this component being added to or removed from a node
+            this.addEventListener("componentAdd" /* fc.EVENT.COMPONENT_ADD */, this.hndEvent);
+        }
+        // Activate the functions of this component as response to events
+        hndEvent = (_event) => {
+            switch (_event.type) {
+                case "componentAdd" /* fc.EVENT.COMPONENT_ADD */:
+                    this.loadConfig();
+                    this.node.addEventListener("renderPrepare" /* fc.EVENT.RENDER_PREPARE */, this.move);
+                    break;
+            }
+        };
+        async loadConfig() {
+            let response = await fetch("config.json");
+            this.config = await response.json();
+        }
+        move = (_event) => {
+            let posHead = this.node.mtxLocal.translation.toVector2();
+            let nearestGridPoint = new fc.Vector2(Math.round(posHead.x), Math.round(posHead.y));
+            //let nearGridPoint: boolean = posHead.equals(nearestGridPoint, 2 * <number>this.config["speed"]);
+            if (this.toNearestGridPoint) {
+                this.moveToNearestGridPoint(nearestGridPoint.toVector3());
+                this.toNearestGridPoint = false;
+            }
+            // Kopf drehen, wenn sich die Richtung ändert
+            if (this.newDirection) {
+                this.node.getChild(0).mtxLocal.rotateZ(this.newFaceDirection);
+                this.node.getChild(1).mtxLocal.rotateZ(this.newFaceDirection);
+                this.newDirection = false;
+            }
+            this.node.mtxLocal.translate(fc.Vector2.SCALE(this.direction, this.config["speed"]).toVector3());
+        };
+        moveToNearestGridPoint(_nearestGridPoint) {
+            this.node.mtxLocal.translation = _nearestGridPoint;
+        }
+    }
+    Script.HeadPart = HeadPart;
+})(Script || (Script = {}));
+var Script;
 (function (Script_1) {
     var fc = FudgeCore;
     fc.Debug.info("Main Program Template running!");
     let viewport;
     let snake;
     let head;
+    let headScript;
     let body;
     let tail;
     let grid;
@@ -131,6 +194,7 @@ var Script;
         // Snake Teile holen
         snake = graph.getChildrenByName("Snake")[0];
         head = snake.getChildrenByName("Head")[0];
+        headScript = head.getComponent(Script_1.HeadPart);
         body = snake.getChildrenByName("Body")[0];
         tail = snake.getChildrenByName("Tail")[0];
         themaSound = head.getComponent(fc.ComponentAudio);
@@ -179,9 +243,21 @@ var Script;
                     else
                         direction = directionOld; // don't turn but continue ahead
                 }
-            if (!direction.equals(directionOld) || direction.magnitudeSquared == 0)
-                head.mtxLocal.translation = nearestGridPoint.toVector3();
+            if (!direction.equals(directionOld) || direction.magnitudeSquared == 0) {
+                headScript.toNearestGridPoint = true;
+                body.getChildren().forEach(function (bodyPart) {
+                    bodyPart.getComponent(Script_1.BodyPart).toNearestGridPoint = true;
+                });
+                tail.getComponent(Script_1.BodyPart).toNearestGridPoint = true;
+            }
         }
+        // Head
+        // Richtungsänderung
+        if (faceDirection != faceDirectionOld) {
+            headScript.newFaceDirection = faceDirectionOld - faceDirection;
+            headScript.newDirection = true;
+        }
+        headScript.direction = direction;
         // Übergabe der neuen Richtung an ComponentScript einzelner Body-Teile + Tail 
         if (!direction.equals(directionOld)) {
             // Body 
@@ -215,13 +291,6 @@ var Script;
                 }
             }
         }
-        // Kopf drehen, wenn sich die Richtung ändert
-        if (faceDirection != faceDirectionOld) {
-            head.getChild(0).mtxLocal.rotateZ(faceDirectionOld - faceDirection);
-            head.getChild(1).mtxLocal.rotateZ(faceDirectionOld - faceDirection);
-        }
-        // Snake (Kopf) bewegen
-        head.mtxLocal.translate(fc.Vector2.SCALE(direction, config["speed"]).toVector3());
         // User Interface
         themaSound.volume = gameState.musicVolume;
         viewport.draw();

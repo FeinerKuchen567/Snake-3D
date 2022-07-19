@@ -3,7 +3,7 @@ namespace Script {
   import fUi = FudgeUserInterface;
 
   export class GameState extends fc.Mutable {
-    public musicVolume: number = 1;
+    public musicVolume: number = 0.5;
 
     public constructor() {
       super();

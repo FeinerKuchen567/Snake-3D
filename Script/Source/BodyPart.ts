@@ -15,6 +15,8 @@ namespace Script {
     public headDirection: fc.Vector2 = fc.Vector2.ZERO();
     public inTurn: boolean = false;
 
+    public toNearestGridPoint: boolean = false;
+
     // Für den "Tail"
     public isTail: boolean = false;
     public nextRotation: number[] = [];
@@ -53,6 +55,12 @@ namespace Script {
 
     private move = (_event: Event): void => {
       let posBodyPart: fc.Vector2 = this.node.mtxLocal.translation.toVector2();
+      let nearestGridPoint: fc.Vector2 = new fc.Vector2(Math.round(posBodyPart.x), Math.round(posBodyPart.y));
+
+      if(this.toNearestGridPoint) {
+          this.moveToNearestGridPoint(nearestGridPoint.toVector3());
+          this.toNearestGridPoint = false;
+      }
 
       if(this.moveActive) {
         // Wenn Snake aus dem Stillstand kommt
@@ -94,10 +102,10 @@ namespace Script {
 
         this.node.mtxLocal.translate(fc.Vector2.SCALE(this.direction, <number>this.config["speed"]).toVector3());
       }
-      else {
-        let nearestGridPoint: fc.Vector2 = new fc.Vector2(Math.round(posBodyPart.x), Math.round(posBodyPart.y));
-        this.node.mtxLocal.translation = nearestGridPoint.toVector3();
-      }
+    }
+
+    private moveToNearestGridPoint(_nearestGridPoint: fc.Vector3): void {
+      this.node.mtxLocal.translation = _nearestGridPoint;
     }
 
     // protected reduceMutator(_mutator: fc.Mutator): void {

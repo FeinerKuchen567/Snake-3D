@@ -129,6 +129,14 @@
       }
     }
   },
+  "Audio|2022-07-16T12:04:50.337Z|90448": {
+    "ƒ.Audio": {
+      "url": "assets\\sounds\\Snake_III-Theme_Song.wav",
+      "idResource": "Audio|2022-07-16T12:04:50.337Z|90448",
+      "name": "assets\\sounds\\Snake_III-Theme_Song.wav",
+      "type": "Audio"
+    }
+  },
   "Graph|2022-07-06T11:49:20.695Z|70691": {
     "ƒ.Graph": {
       "name": "Snake-3D",
@@ -7927,6 +7935,22 @@
                       {
                         "ƒ.ComponentAudioListener": {
                           "active": true
+                        }
+                      }
+                    ],
+                    "Head": [],
+                    "HeadPart": [
+                      {
+                        "Script.HeadPart": {
+                          "active": true,
+                          "moveActive": false,
+                          "direction": {
+                            "x": 0,
+                            "y": 0
+                          },
+                          "newDirection": false,
+                          "newFaceDirection": 0,
+                          "toNearestGridPoint": false
                         }
                       }
                     ]
@@ -16503,14 +16527,6 @@
       ],
       "idResource": "Graph|2022-07-08T12:06:23.590Z|23734",
       "type": "Graph"
-    }
-  },
-  "Audio|2022-07-16T12:04:50.337Z|90448": {
-    "ƒ.Audio": {
-      "url": "assets\\sounds\\Snake_III-Theme_Song.wav",
-      "idResource": "Audio|2022-07-16T12:04:50.337Z|90448",
-      "name": "assets\\sounds\\Snake_III-Theme_Song.wav",
-      "type": "Audio"
     }
   }
 }

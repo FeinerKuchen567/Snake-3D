@@ -9,6 +9,7 @@ namespace Script {
   let viewport: fc.Viewport;
   let snake: fc.Node;
   let head: fc.Node;
+  let headScript: HeadPart;
   let body: fc.Node 
   let tail: fc.Node 
   let grid: fc.Node;
@@ -44,6 +45,7 @@ namespace Script {
     // Snake Teile holen
     snake = graph.getChildrenByName("Snake")[0];
     head = snake.getChildrenByName("Head")[0];
+    headScript = head.getComponent(HeadPart);
     body = snake.getChildrenByName("Body")[0];
     tail = snake.getChildrenByName("Tail")[0];
     
@@ -100,9 +102,23 @@ namespace Script {
             direction = directionOld; // don't turn but continue ahead
         }
 
-      if (!direction.equals(directionOld) || direction.magnitudeSquared == 0)
-        head.mtxLocal.translation = nearestGridPoint.toVector3();
+      if (!direction.equals(directionOld) || direction.magnitudeSquared == 0){
+        headScript.toNearestGridPoint = true;
+        body.getChildren().forEach(function (bodyPart: fc.Node){
+          bodyPart.getComponent(BodyPart).toNearestGridPoint = true;
+        });
+        tail.getComponent(BodyPart).toNearestGridPoint = true;
+      }
     }
+
+    // Head
+    // Richtungsänderung
+    if (faceDirection != faceDirectionOld) {
+      headScript.newFaceDirection = faceDirectionOld - faceDirection;
+      headScript.newDirection = true;
+    }
+
+    headScript.direction = direction;
 
     // Übergabe der neuen Richtung an ComponentScript einzelner Body-Teile + Tail 
     if(!direction.equals(directionOld)){
@@ -140,15 +156,6 @@ namespace Script {
         }
       }
     }
-    
-    // Kopf drehen, wenn sich die Richtung ändert
-    if (faceDirection != faceDirectionOld) {
-      head.getChild(0).mtxLocal.rotateZ(faceDirectionOld - faceDirection);
-      head.getChild(1).mtxLocal.rotateZ(faceDirectionOld - faceDirection);
-    }
-    
-    // Snake (Kopf) bewegen
-    head.mtxLocal.translate(fc.Vector2.SCALE(direction, <number>config["speed"]).toVector3());
 
     // User Interface
     themaSound.volume = gameState.musicVolume;
