@@ -21,7 +21,7 @@ This repository is my final submission-project "Snake 3D" for the module *P.R.I.
 |---:|---------------------|---------------------------------------------------------------------------------------------------------------------|
 |  1 | Units and Positions | 0 is the bottom left grid point and 1 is the messurement for any other grid points |
 |  2 | Hierarchy           | ![Hierarchy](./image/Hirachy_Editor.png) <br /> On runntime more Nodes gets added to the *Body*-Node. And a the *Food*-Node gats atached to the *Snake-3D*-Graph. |
-|  3 | Editor              | All the initial design is done in the editor, whilst the extensoin of the snake is better done by coding. |
+|  3 | Editor              | All the initial design is done in the editor, whilst the extension of the snake is better done by coding. The *Food* is also done by Code to add an CustomEvent. |
 |  4 | Scriptcomponents    | The movement of the body is done by SC, because of the turning were every body-part now moves in a diferent direction till the point of turning |
 |  5 | Extend              | *BodyPart* is a extension of ComponentScript; *GameState* extends the Mutable-Class; *Food* extends the Node-Class |
 |  6 | Sound               | Snake-Thema-Music & Eating-SFX - the Lisener is placed on the Head-Node to follow the Head |
