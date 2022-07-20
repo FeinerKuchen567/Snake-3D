@@ -7,18 +7,23 @@ namespace Script {
   }
 
   let viewport: fc.Viewport;
+  let grid: fc.Node;
+
   let snake: fc.Node;
   let head: fc.Node;
   let headScript: HeadPart;
-  let body: fc.Node 
-  let tail: fc.Node 
-  let grid: fc.Node;
+  let body: fc.Node; 
+  let tail: fc.Node;
+  let food: Food;
+
+  let score: number = 1;
 
   let direction: fc.Vector2 = fc.Vector2.ZERO();
   let directionOld: fc.Vector2 = fc.Vector2.ZERO();
   let faceDirection: number = 0;
 
   let themaSound: fc.ComponentAudio;
+  let eatingSound: fc.ComponentAudio;
 
   let config: Config;
   let gameState: GameState;
@@ -41,6 +46,7 @@ namespace Script {
     config = await response.json();
 
     gameState = new GameState();
+    gameState.score = score;
 
     // Snake Teile holen
     snake = graph.getChildrenByName("Snake")[0];
@@ -48,8 +54,14 @@ namespace Script {
     headScript = head.getComponent(HeadPart);
     body = snake.getChildrenByName("Body")[0];
     tail = snake.getChildrenByName("Tail")[0];
+
+    food = new Food(new fc.Vector2(6, 6));
+    graph.addChild(food);
+
+    graph.addEventListener("bodyExtend", bodyExtend);
     
-    themaSound = head.getComponent(fc.ComponentAudio);
+    themaSound = head.getComponents(fc.ComponentAudio)[0];
+    eatingSound = head.getComponents(fc.ComponentAudio)[1];
     if(!themaSound.isPlaying)
       themaSound.play(true);
 
@@ -61,9 +73,9 @@ namespace Script {
 
   function update(_event: Event): void {
     // fc.Physics.simulate();  // if physics is included and used
-    let posHead: fc.Vector3 = head.mtxLocal.translation;
+    let posHead: fc.Vector2 = head.mtxLocal.translation.toVector2();
     let nearestGridPoint: fc.Vector2 = new fc.Vector2(Math.round(posHead.x), Math.round(posHead.y));
-    let nearGridPoint: boolean = posHead.toVector2().equals(nearestGridPoint, 2 * <number>config["speed"]);
+    let nearGridPoint: boolean = posHead.equals(nearestGridPoint, 2 * <number>config["speed"]);
     let faceDirectionOld: number = faceDirection;
 
     if (nearGridPoint) {
@@ -125,7 +137,7 @@ namespace Script {
       // Body 
       body.getChildren().forEach(function (bodyPart: fc.Node){
         let Script: BodyPart = bodyPart.getComponent(BodyPart);
-        Script.headDirection = direction;
+        Script.headDirection = headScript.direction;
         
         if(direction.equals(fc.Vector2.ZERO()))
           Script.moveActive = false;
@@ -133,7 +145,7 @@ namespace Script {
           Script.moveActive = true;
           Script.nextDirections.push(new fc.Vector2(direction.x, direction.y));
           if (faceDirection != faceDirectionOld) {
-            Script.nextPoints.push(posHead.toVector2());
+            Script.nextPoints.push(head.mtxLocal.translation.toVector2());
             Script.inTurn = true; 
           }
         }
@@ -141,7 +153,7 @@ namespace Script {
 
       // Tail
       let tailScript: BodyPart = tail.getComponent(BodyPart);
-      tailScript.headDirection = direction;
+      tailScript.headDirection = headScript.direction;
       tailScript.isTail = true;
 
       if(direction.equals(fc.Vector2.ZERO()))
@@ -150,7 +162,7 @@ namespace Script {
         tailScript.moveActive = true;
         tailScript.nextDirections.push(new fc.Vector2(direction.x, direction.y));
         if (faceDirection != faceDirectionOld) {
-          tailScript.nextPoints.push(posHead.toVector2());
+          tailScript.nextPoints.push(head.mtxLocal.translation.toVector2());
           tailScript.inTurn = true; 
           tailScript.nextRotation.push(faceDirectionOld - faceDirection);
         }
@@ -158,7 +170,9 @@ namespace Script {
     }
 
     // User Interface
-    themaSound.volume = gameState.musicVolume;
+
+    themaSound.volume = gameState.musicVolume * gameState.masterVolume;
+    eatingSound.volume = gameState.sfxVolume * gameState.masterVolume;
 
     viewport.draw();
     //fc.AudioManager.default.update();
@@ -167,5 +181,31 @@ namespace Script {
   function blocked(_posCheck: fc.Vector2): boolean {
     let check: fc.Node = grid.getChild(_posCheck.y)?.getChild(_posCheck.x)?.getChild(0);
     return (!check);
+  }
+
+  function bodyExtend(_event: CustomEvent): void {
+    // Neuer Node
+    let newBodyPart: fc.Node = new fc.Node("Body-" + addLeadingZeros(score, 2));
+    score += 1;
+    gameState.score = score;
+    
+    // Alle Components zuweisen
+    let staringBodyPart = body.getChildrenByName("Body-Start")[0];
+    newBodyPart.addComponent(new fc.ComponentMesh(staringBodyPart.getComponent(fc.ComponentMesh).mesh));
+    newBodyPart.addComponent(new fc.ComponentMaterial(staringBodyPart.getComponent(fc.ComponentMaterial).material));
+    newBodyPart.addComponent(new fc.ComponentTransform);
+    newBodyPart.addComponent(new BodyPart(tail.getComponent(BodyPart)));
+
+    // Position von Teil geben & Tail verschieben
+    newBodyPart.getComponent(fc.ComponentMesh).mtxPivot.translateZ(0.5);
+    newBodyPart.mtxLocal.translation = tail.mtxLocal.translation;
+    tail.mtxLocal.translate(fc.Vector2.SCALE(tail.getComponent(BodyPart).getCurrentDirection(), -1).toVector3(0));
+    
+    // An den Graph hängen
+    body.appendChild(newBodyPart);
+  }
+
+  function addLeadingZeros(num: number, totalLength: number) {
+    return String(num).padStart(totalLength, '0');
   }
 }

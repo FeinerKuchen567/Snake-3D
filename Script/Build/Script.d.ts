@@ -13,17 +13,32 @@ declare namespace Script {
         private direction;
         private toNextPoint;
         private config;
-        constructor();
+        constructor(_bodyPart?: BodyPart);
         hndEvent: (_event: Event) => void;
         private loadConfig;
         private move;
         private moveToNearestGridPoint;
+        getCurrentDirection(): fc.Vector2;
+    }
+}
+declare namespace Script {
+    import fc = FudgeCore;
+    class Food extends fc.Node {
+        private position;
+        constructor(_position: fc.Vector2);
+        spawn(): Promise<void>;
+        private setPosition;
+        private newPosition;
+        getPosition(): fc.Vector2;
     }
 }
 declare namespace Script {
     import fc = FudgeCore;
     class GameState extends fc.Mutable {
+        masterVolume: number;
         musicVolume: number;
+        sfxVolume: number;
+        score: number;
         constructor();
         protected reduceMutator(_mutator: fc.Mutator): void;
     }
@@ -37,11 +52,13 @@ declare namespace Script {
         newFaceDirection: number;
         toNearestGridPoint: boolean;
         private config;
+        private food;
         constructor();
         hndEvent: (_event: Event) => void;
         private loadConfig;
         private move;
         private moveToNearestGridPoint;
+        private getFoodPosition;
     }
 }
 declare namespace Script {

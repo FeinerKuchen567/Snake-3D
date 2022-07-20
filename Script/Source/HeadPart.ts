@@ -19,6 +19,7 @@ namespace Script {
       public toNearestGridPoint: boolean = false;
 
       private config: Config;
+      private food: Food;
   
       constructor() {
         super();
@@ -51,26 +52,37 @@ namespace Script {
       private move = (_event: Event): void => {
         let posHead: fc.Vector2 = this.node.mtxLocal.translation.toVector2();
         let nearestGridPoint: fc.Vector2 = new fc.Vector2(Math.round(posHead.x), Math.round(posHead.y));
-        //let nearGridPoint: boolean = posHead.equals(nearestGridPoint, 2 * <number>this.config["speed"]);
   
         if(this.toNearestGridPoint) {
-            this.moveToNearestGridPoint(nearestGridPoint.toVector3());
-            this.toNearestGridPoint = false;
+          this.moveToNearestGridPoint(nearestGridPoint.toVector3());
+          this.toNearestGridPoint = false;
         }
         
 
         // Kopf drehen, wenn sich die Richtung ändert
         if(this.newDirection) {
-            this.node.getChild(0).mtxLocal.rotateZ(this.newFaceDirection);
-            this.node.getChild(1).mtxLocal.rotateZ(this.newFaceDirection);
-            this.newDirection = false;
+          this.node.getChild(0).mtxLocal.rotateZ(this.newFaceDirection);
+          this.node.getChild(1).mtxLocal.rotateZ(this.newFaceDirection);
+          this.newDirection = false;
         }
 
         this.node.mtxLocal.translate(fc.Vector2.SCALE(this.direction, <number>this.config["speed"]).toVector3());
+
+        if(posHead.equals(this.getFoodPosition(), 2 * <number>this.config["speed"])){
+          this.food.dispatchEvent(new CustomEvent("eatFood"));
+          this.node.getComponents(fc.ComponentAudio)[1].play(true);
+        }
       }
 
       private moveToNearestGridPoint(_nearestGridPoint: fc.Vector3): void {
         this.node.mtxLocal.translation = _nearestGridPoint;
+      }
+
+      private getFoodPosition(): fc.Vector2 {
+        if(this.food == null)
+          this.food = <Food>this.node.getParent().getParent().getChildrenByName("Food")[0];
+        
+        return this.food.getPosition();
       }
   
       // protected reduceMutator(_mutator: fc.Mutator): void {

@@ -47,36 +47,6 @@
       "type": "MeshPyramid"
     }
   },
-  "MeshSphere|2022-07-07T11:20:54.463Z|48995": {
-    "ƒ.MeshSphere": {
-      "idResource": "MeshSphere|2022-07-07T11:20:54.463Z|48995",
-      "name": "Food",
-      "type": "MeshSphere",
-      "shape": {
-        "ƒ.Vector2": [
-          "[0, 0.5]",
-          "[0.5, 0]",
-          "[0, -0.5]"
-        ]
-      },
-      "longitudes": 4,
-      "latitudes": 2
-    }
-  },
-  "Material|2022-07-07T11:21:31.656Z|51289": {
-    "ƒ.Material": {
-      "name": "Red",
-      "idResource": "Material|2022-07-07T11:21:31.656Z|51289",
-      "shader": "ShaderFlat",
-      "coat": {
-        "ƒ.CoatRemissive": {
-          "color": "[0.7254901960784313, 0.15294117647058825, 0.15294117647058825, 1]",
-          "diffuse": 1,
-          "specular": 0
-        }
-      }
-    }
-  },
   "Material|2022-07-08T12:28:57.788Z|81797": {
     "ƒ.Material": {
       "name": "Snake",
@@ -7929,6 +7899,15 @@
                           "loop": true,
                           "volume": 1
                         }
+                      },
+                      {
+                        "ƒ.ComponentAudio": {
+                          "active": true,
+                          "idResource": "Audio|2022-07-20T13:54:31.607Z|23825",
+                          "playing": false,
+                          "loop": false,
+                          "volume": 1
+                        }
                       }
                     ],
                     "ComponentAudioListener": [
@@ -7938,12 +7917,10 @@
                         }
                       }
                     ],
-                    "Head": [],
                     "HeadPart": [
                       {
                         "Script.HeadPart": {
                           "active": true,
-                          "moveActive": false,
                           "direction": {
                             "x": 0,
                             "y": 0
@@ -8080,7 +8057,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[8, 4, 0]",
+                            "translation": "[8, 5, 0]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -8100,6 +8077,7 @@
                             "y": 0
                           },
                           "inTurn": false,
+                          "toNearestGridPoint": false,
                           "isTail": false,
                           "direction": {
                             "x": 0,
@@ -8312,84 +8290,7 @@
                                   "y": 0
                                 },
                                 "inTurn": false,
-                                "isTail": false,
-                                "direction": {
-                                  "x": 0,
-                                  "y": 0
-                                },
-                                "toNextPoint": {
-                                  "x": 0,
-                                  "y": 0
-                                }
-                              }
-                            }
-                          ]
-                        },
-                        "children": []
-                      }
-                    },
-                    {
-                      "ƒ.Node": {
-                        "name": "Body-01",
-                        "active": true,
-                        "components": {
-                          "ComponentMesh": [
-                            {
-                              "ƒ.ComponentMesh": {
-                                "idMesh": "MeshCube|2022-07-06T12:47:35.715Z|62658",
-                                "pivot": {
-                                  "translation": "[0, 0, 0.4999999403953552]",
-                                  "rotation": "[0, 0, 0]",
-                                  "scaling": "[1, 1, 1]"
-                                },
-                                "Component": {
-                                  "active": true
-                                }
-                              }
-                            }
-                          ],
-                          "ComponentMaterial": [
-                            {
-                              "ƒ.ComponentMaterial": {
-                                "sortForAlpha": false,
-                                "clrPrimary": "[1, 1, 1, 1]",
-                                "clrSecondary": "[1, 1, 1, 1]",
-                                "pivot": {
-                                  "translation": "[0, 0]",
-                                  "rotation": 0,
-                                  "scaling": "[1, 1]"
-                                },
-                                "Component": {
-                                  "active": true
-                                },
-                                "idMaterial": "Material|2022-07-08T12:27:37.139Z|78760"
-                              }
-                            }
-                          ],
-                          "ComponentTransform": [
-                            {
-                              "ƒ.ComponentTransform": {
-                                "local": {
-                                  "translation": "[8, 5, 0]",
-                                  "rotation": "[0, 0, 0]",
-                                  "scaling": "[1, 1, 1]"
-                                },
-                                "Component": {
-                                  "active": true
-                                }
-                              }
-                            }
-                          ],
-                          "BodyPart": [
-                            {
-                              "Script.BodyPart": {
-                                "active": true,
-                                "moveActive": false,
-                                "headDirection": {
-                                  "x": 0,
-                                  "y": 0
-                                },
-                                "inTurn": false,
+                                "toNearestGridPoint": false,
                                 "isTail": false,
                                 "direction": {
                                   "x": 0,
@@ -8410,62 +8311,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "ƒ.Node": {
-            "name": "Food",
-            "active": true,
-            "components": {
-              "ComponentTransform": [
-                {
-                  "ƒ.ComponentTransform": {
-                    "local": {
-                      "translation": "[4, 5, 0]",
-                      "rotation": "[0, 0, 0]",
-                      "scaling": "[1, 1, 1]"
-                    },
-                    "Component": {
-                      "active": true
-                    }
-                  }
-                }
-              ],
-              "ComponentMesh": [
-                {
-                  "ƒ.ComponentMesh": {
-                    "idMesh": "MeshSphere|2022-07-07T11:20:54.463Z|48995",
-                    "pivot": {
-                      "translation": "[0, 0, 0.49999991059303284]",
-                      "rotation": "[0, 0, 0]",
-                      "scaling": "[0.8999999761581421, 0.8999999761581421, 0.8999999761581421]"
-                    },
-                    "Component": {
-                      "active": true
-                    }
-                  }
-                }
-              ],
-              "ComponentMaterial": [
-                {
-                  "ƒ.ComponentMaterial": {
-                    "sortForAlpha": false,
-                    "clrPrimary": "[1, 1, 1, 1]",
-                    "clrSecondary": "[1, 1, 1, 1]",
-                    "pivot": {
-                      "translation": "[0, 0]",
-                      "rotation": 0,
-                      "scaling": "[1, 1]"
-                    },
-                    "Component": {
-                      "active": true
-                    },
-                    "idMaterial": "Material|2022-07-07T11:21:31.656Z|51289"
-                  }
-                }
-              ]
-            },
-            "children": []
           }
         }
       ],
@@ -16527,6 +16372,14 @@
       ],
       "idResource": "Graph|2022-07-08T12:06:23.590Z|23734",
       "type": "Graph"
+    }
+  },
+  "Audio|2022-07-20T13:54:31.607Z|23825": {
+    "ƒ.Audio": {
+      "url": "assets\\sounds\\Eating.wav",
+      "idResource": "Audio|2022-07-20T13:54:31.607Z|23825",
+      "name": "assets\\sounds\\Eating.wav",
+      "type": "Audio"
     }
   }
 }

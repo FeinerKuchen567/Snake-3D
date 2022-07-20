@@ -25,6 +25,7 @@ div#vui {
   position: absolute;
   display: flex;
   align-items: center;
+  justify-content: space-around;
   height: 5vh;
   width: 100vw;
   bottom: 0;
@@ -33,11 +34,29 @@ div#vui {
   padding-left: 20px;
 }
 
-div#volMusic {
+div#score input {
+  display: block;
+  background-color: black;
+  color: white;
+  border: 2px solid #ffff00;
+  border-radius: 5px;
+  outline: none !important;
+  padding: 5px;
+  text-align: center;
+}
+
+div#score {
+  display: flex;
+  align-items: center;
+}
+
+div#volume {
   display: flex;
   align-items: unset; 
 }
 
-#volMusic label {
-  padding-right: 10px;
+#score input,
+#volume input {
+  margin-left: 10px;
+  margin-right: 25px;
 }

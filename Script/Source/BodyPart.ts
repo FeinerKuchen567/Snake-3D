@@ -14,7 +14,6 @@ namespace Script {
     public moveActive: boolean = false;
     public headDirection: fc.Vector2 = fc.Vector2.ZERO();
     public inTurn: boolean = false;
-
     public toNearestGridPoint: boolean = false;
 
     // Für den "Tail"
@@ -25,10 +24,25 @@ namespace Script {
     private toNextPoint: fc.Vector2 = fc.Vector2.ZERO();
     private config: Config;
 
-    constructor() {
+    constructor(_bodyPart: BodyPart = null) {
       super();
       this.serialize();
       
+      if(_bodyPart != null) {
+        this.nextDirections = _bodyPart.nextDirections;
+        this.nextPoints = _bodyPart.nextPoints;
+        this.moveActive = _bodyPart.moveActive;
+        this.headDirection = _bodyPart.headDirection;
+        this.inTurn = _bodyPart.inTurn;
+        this.toNearestGridPoint = _bodyPart.toNearestGridPoint;
+
+        this.direction = _bodyPart.direction;
+        this.toNextPoint = _bodyPart.toNextPoint;
+        this.config = _bodyPart.config;
+      }
+      else {
+        this.loadConfig();
+      }
 
       // Don't start when running in editor
       if (fc.Project.mode == fc.MODE.EDITOR)
@@ -42,7 +56,6 @@ namespace Script {
     public hndEvent = (_event: Event): void => {
       switch (_event.type) {
         case fc.EVENT.COMPONENT_ADD:
-          this.loadConfig();
           this.node.addEventListener(fc.EVENT.RENDER_PREPARE, this.move);
           break;
       }
@@ -78,7 +91,8 @@ namespace Script {
               this.toNextPoint = this.nextPoints.shift();
           }
 
-          if(this.toNextPoint.x.toFixed(2) == posBodyPart.x.toFixed(2) && this.toNextPoint.y.toFixed(2) == posBodyPart.y.toFixed(2)){
+          if(this.toNextPoint.equals(posBodyPart, <number>this.config["speed"])) {
+            this.moveToNearestGridPoint(nearestGridPoint.toVector3());
 
             if(this.nextDirections[0] != undefined)
               this.direction = this.nextDirections.shift();
@@ -106,6 +120,10 @@ namespace Script {
 
     private moveToNearestGridPoint(_nearestGridPoint: fc.Vector3): void {
       this.node.mtxLocal.translation = _nearestGridPoint;
+    }
+
+    public getCurrentDirection(): fc.Vector2 {
+      return this.direction;
     }
 
     // protected reduceMutator(_mutator: fc.Mutator): void {

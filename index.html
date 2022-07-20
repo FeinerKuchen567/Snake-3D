@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+    <head>
         <title>Snake-3D</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="styles.css" />
@@ -79,12 +79,20 @@
         <canvas class="fullscreen">
         </canvas>
         <div id="vui">
-            <div id="volMusic">
+            <div id="score">
+                <label for="score">Score: </label>
+                <input key="score" type="text" value="1" size="3" disabled/>
+            </div>
+            <div id="volume">
+                <label for="masterVolume">Gesammt-Lautstärke:</label> 
+                <input key="masterVolume" type="range" value="1" min="0" max="1" step="0.01" />
+
                 <label for="musicVolume">Musik-Lautstärke:</label> 
                 <input key="musicVolume" type="range" value="1" min="0" max="1" step="0.01" />
-            </div> 
-        </div>
-    
 
-</body>
+                <label for="sfxVolume">SFX-Lautstärke:</label> 
+                <input key="sfxVolume" type="range" value="1" min="0" max="1" step="0.01" />
+            </div>
+        </div>
+    </body>
 </html>
