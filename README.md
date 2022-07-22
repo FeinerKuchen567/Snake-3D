@@ -19,13 +19,13 @@ This repository is my final submission-project "Snake 3D" for the module *P.R.I.
 © Prof. Dipl.-Ing. Jirka R. Dell'Oro-Friedl, HFU
 | Nr | Criterion           | Explanation                                                                                                         |
 |---:|---------------------|---------------------------------------------------------------------------------------------------------------------|
-|  1 | Units and Positions | 0 is the bottom left grid point and 1 is the messurement for any other grid points |
-|  2 | Hierarchy           | ![Hierarchy](./image/Hirachy_Editor.png) <br /> On runntime more Nodes gets added to the *Body*-Node. And a the *Food*-Node gats atached to the *Snake-3D*-Graph. |
+|  1 | Units and Positions | 0 is the bottom left grid point and 1 is the measurement for any other grid points |
+|  2 | Hierarchy           | ![Hierarchy](./image/Hirachy_Editor.png) <br /> On runtime more Nodes gets added to the *Body*-Node. And a the *Food*-Node gats attached  to the *Snake-3D*-Graph. |
 |  3 | Editor              | All the initial design is done in the editor, whilst the extension of the snake is better done by coding. The *Food* is also done by Code to add an CustomEvent. |
-|  4 | Scriptcomponents    | The movement of the body is done by SC, because of the turning were every body-part now moves in a diferent direction till the point of turning |
+|  4 | Scriptcomponents    | The movement of the body is done by SC, because of the turning were every body-part now moves in a different direction till the point of turning |
 |  5 | Extend              | *BodyPart* is a extension of ComponentScript; *GameState* extends the Mutable-Class; *Food* extends the Node-Class |
-|  6 | Sound               | Snake-Thema-Music & Eating-SFX - the Lisener is placed on the Head-Node to follow the Head |
-|  7 | VUI                 | Sound Control for the Thema-Music + Game-Soundeffects |
-|  8 | Event-System        | A *CustomEvent* gives the signal for the food to repostion and another event handels the extension of the body. |
+|  6 | Sound               | Snake-Thema-Music & Eating-SFX & GameOver-Music  - the Listener is placed on the Head-Node to follow the Head |
+|  7 | VUI                 | Sound Control for the Thema-Music + Game-SFX |
+|  8 | Event-System        | A *CustomEvent* gives the signal for the food to reposition, and another event handles the extension of the body. |
 |  9 | External Data       | The speed-factor for the movement is saved in a *config.json* |
-|  A | Light               | I placed  some *Directional* light in a way where edges of the mesh is visible |
+|  A | Light               | I placed two *Directional* lights in a way where edges of the mesh are visible. And a little bit of *Ambient* light to not leave any surface black. |
