@@ -59,7 +59,9 @@ namespace Script {
     graph.addChild(food);
 
     graph.addEventListener("bodyExtend", bodyExtend);
+    snake.addEventListener("gameOver", gameOver);
     
+    // Sound
     themaSound = head.getComponents(fc.ComponentAudio)[0];
     eatingSound = head.getComponents(fc.ComponentAudio)[1];
     if(!themaSound.isPlaying)
@@ -105,11 +107,15 @@ namespace Script {
 
       // Im vorgesehenen Feld bleiben (Aus Pacman übernommen + angepasst)
       if (blocked(fc.Vector2.SUM(nearestGridPoint, direction)))
-        if (direction.equals(directionOld)) // did not turn
+        if (direction.equals(directionOld)) { // did not turn
           direction.set(0, 0); // full stop
+          snake.dispatchEvent(new CustomEvent("gameOver"));
+        }
         else {
-          if (blocked(fc.Vector2.SUM(nearestGridPoint, directionOld))) // wrong turn and dead end
+          if (blocked(fc.Vector2.SUM(nearestGridPoint, directionOld))) { // wrong turn and dead end
             direction.set(0, 0); // full stop
+            snake.dispatchEvent(new CustomEvent("gameOver"));
+          }
           else
             direction = directionOld; // don't turn but continue ahead
         }
@@ -130,14 +136,14 @@ namespace Script {
       headScript.newDirection = true;
     }
 
-    headScript.direction = direction;
+    headScript.direction = direction.clone;
 
     // Übergabe der neuen Richtung an ComponentScript einzelner Body-Teile + Tail 
     if(!direction.equals(directionOld)){
       // Body 
       body.getChildren().forEach(function (bodyPart: fc.Node){
         let Script: BodyPart = bodyPart.getComponent(BodyPart);
-        Script.headDirection = headScript.direction;
+        Script.headDirection = headScript.direction.clone;
         
         if(direction.equals(fc.Vector2.ZERO()))
           Script.moveActive = false;
@@ -153,7 +159,7 @@ namespace Script {
 
       // Tail
       let tailScript: BodyPart = tail.getComponent(BodyPart);
-      tailScript.headDirection = headScript.direction;
+      tailScript.headDirection = headScript.direction.clone;
       tailScript.isTail = true;
 
       if(direction.equals(fc.Vector2.ZERO()))
@@ -170,7 +176,6 @@ namespace Script {
     }
 
     // User Interface
-
     themaSound.volume = gameState.musicVolume * gameState.masterVolume;
     eatingSound.volume = gameState.sfxVolume * gameState.masterVolume;
 
@@ -195,14 +200,21 @@ namespace Script {
     newBodyPart.addComponent(new fc.ComponentMaterial(staringBodyPart.getComponent(fc.ComponentMaterial).material));
     newBodyPart.addComponent(new fc.ComponentTransform);
     newBodyPart.addComponent(new BodyPart(tail.getComponent(BodyPart)));
-
-    // Position von Teil geben & Tail verschieben
     newBodyPart.getComponent(fc.ComponentMesh).mtxPivot.translateZ(0.5);
+
+    // Position von Tail geben & Tail verschieben
     newBodyPart.mtxLocal.translation = tail.mtxLocal.translation;
     tail.mtxLocal.translate(fc.Vector2.SCALE(tail.getComponent(BodyPart).getCurrentDirection(), -1).toVector3(0));
     
     // An den Graph hängen
     body.appendChild(newBodyPart);
+  }
+
+  function gameOver(_event: CustomEvent): void {
+    gameState.gameOver();
+    themaSound.play(false);
+    snake.getComponent(fc.ComponentAudio).play(true);
+    fc.Loop.removeEventListener(fc.EVENT.LOOP_FRAME, update);
   }
 
   function addLeadingZeros(num: number, totalLength: number) {

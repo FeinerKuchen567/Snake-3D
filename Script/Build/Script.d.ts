@@ -39,7 +39,9 @@ declare namespace Script {
         musicVolume: number;
         sfxVolume: number;
         score: number;
+        isGameOver: boolean;
         constructor();
+        gameOver(): void;
         protected reduceMutator(_mutator: fc.Mutator): void;
     }
 }

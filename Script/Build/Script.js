@@ -26,11 +26,11 @@ var Script;
                 this.nextDirections = _bodyPart.nextDirections;
                 this.nextPoints = _bodyPart.nextPoints;
                 this.moveActive = _bodyPart.moveActive;
-                this.headDirection = _bodyPart.headDirection;
+                this.headDirection = _bodyPart.headDirection.clone;
                 this.inTurn = _bodyPart.inTurn;
                 this.toNearestGridPoint = _bodyPart.toNearestGridPoint;
-                this.direction = _bodyPart.direction;
-                this.toNextPoint = _bodyPart.toNextPoint;
+                this.direction = _bodyPart.direction.clone;
+                this.toNextPoint = _bodyPart.toNextPoint.clone;
                 this.config = _bodyPart.config;
             }
             else {
@@ -77,6 +77,9 @@ var Script;
                     }
                     if (this.toNextPoint.equals(posBodyPart, this.config["speed"])) {
                         this.moveToNearestGridPoint(nearestGridPoint.toVector3());
+                        if (this.isTail) {
+                            //console.log(this);
+                        }
                         if (this.nextDirections[0] != undefined)
                             this.direction = this.nextDirections.shift();
                         else
@@ -153,10 +156,16 @@ var Script;
         musicVolume = 0.5;
         sfxVolume = 1;
         score = 0;
+        isGameOver = false;
         constructor() {
             super();
             let domVui = document.querySelector("div#vui");
             new fUi.Controller(this, domVui);
+        }
+        gameOver() {
+            this.isGameOver = true;
+            document.querySelector("div#gameOver").setAttribute("class", "");
+            document.querySelector("span#yourScore").innerHTML = this.score.toString();
         }
         reduceMutator(_mutator) { }
     }
@@ -271,6 +280,8 @@ var Script;
         food = new Script_1.Food(new fc.Vector2(6, 6));
         graph.addChild(food);
         graph.addEventListener("bodyExtend", bodyExtend);
+        snake.addEventListener("gameOver", gameOver);
+        // Sound
         themaSound = head.getComponents(fc.ComponentAudio)[0];
         eatingSound = head.getComponents(fc.ComponentAudio)[1];
         if (!themaSound.isPlaying)
@@ -310,11 +321,15 @@ var Script;
             }
             // Im vorgesehenen Feld bleiben (Aus Pacman übernommen + angepasst)
             if (blocked(fc.Vector2.SUM(nearestGridPoint, direction)))
-                if (direction.equals(directionOld)) // did not turn
+                if (direction.equals(directionOld)) { // did not turn
                     direction.set(0, 0); // full stop
+                    snake.dispatchEvent(new CustomEvent("gameOver"));
+                }
                 else {
-                    if (blocked(fc.Vector2.SUM(nearestGridPoint, directionOld))) // wrong turn and dead end
+                    if (blocked(fc.Vector2.SUM(nearestGridPoint, directionOld))) { // wrong turn and dead end
                         direction.set(0, 0); // full stop
+                        snake.dispatchEvent(new CustomEvent("gameOver"));
+                    }
                     else
                         direction = directionOld; // don't turn but continue ahead
                 }
@@ -332,13 +347,13 @@ var Script;
             headScript.newFaceDirection = faceDirectionOld - faceDirection;
             headScript.newDirection = true;
         }
-        headScript.direction = direction;
+        headScript.direction = direction.clone;
         // Übergabe der neuen Richtung an ComponentScript einzelner Body-Teile + Tail 
         if (!direction.equals(directionOld)) {
             // Body 
             body.getChildren().forEach(function (bodyPart) {
                 let Script = bodyPart.getComponent(Script_1.BodyPart);
-                Script.headDirection = headScript.direction;
+                Script.headDirection = headScript.direction.clone;
                 if (direction.equals(fc.Vector2.ZERO()))
                     Script.moveActive = false;
                 else {
@@ -352,7 +367,7 @@ var Script;
             });
             // Tail
             let tailScript = tail.getComponent(Script_1.BodyPart);
-            tailScript.headDirection = headScript.direction;
+            tailScript.headDirection = headScript.direction.clone;
             tailScript.isTail = true;
             if (direction.equals(fc.Vector2.ZERO()))
                 tailScript.moveActive = false;
@@ -387,12 +402,18 @@ var Script;
         newBodyPart.addComponent(new fc.ComponentMaterial(staringBodyPart.getComponent(fc.ComponentMaterial).material));
         newBodyPart.addComponent(new fc.ComponentTransform);
         newBodyPart.addComponent(new Script_1.BodyPart(tail.getComponent(Script_1.BodyPart)));
-        // Position von Teil geben & Tail verschieben
         newBodyPart.getComponent(fc.ComponentMesh).mtxPivot.translateZ(0.5);
+        // Position von Tail geben & Tail verschieben
         newBodyPart.mtxLocal.translation = tail.mtxLocal.translation;
         tail.mtxLocal.translate(fc.Vector2.SCALE(tail.getComponent(Script_1.BodyPart).getCurrentDirection(), -1).toVector3(0));
         // An den Graph hängen
         body.appendChild(newBodyPart);
+    }
+    function gameOver(_event) {
+        gameState.gameOver();
+        themaSound.play(false);
+        snake.getComponent(fc.ComponentAudio).play(true);
+        fc.Loop.removeEventListener("loopFrame" /* fc.EVENT.LOOP_FRAME */, update);
     }
     function addLeadingZeros(num, totalLength) {
         return String(num).padStart(totalLength, '0');

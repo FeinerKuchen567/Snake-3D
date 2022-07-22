@@ -38,8 +38,7 @@ div#score input {
   display: block;
   background-color: black;
   color: white;
-  border: 2px solid #ffff00;
-  border-radius: 5px;
+  border: none;
   outline: none !important;
   padding: 5px;
   text-align: center;
@@ -48,6 +47,9 @@ div#score input {
 div#score {
   display: flex;
   align-items: center;
+  border: 2px solid #ffff00;
+  border-radius: 15px;
+  padding: 5px 10px 5px 25px;
 }
 
 div#volume {
@@ -55,8 +57,27 @@ div#volume {
   align-items: unset; 
 }
 
-#score input,
+div#volume span {
+  margin-right: 25px;
+}
+
 #volume input {
   margin-left: 10px;
   margin-right: 25px;
+}
+
+div#gameOver {
+  position: absolute;
+  top: 41%;
+  left: 38%;
+  text-align: center;
+  font-size: 100px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  color: yellow;
+  z-index: 1000;
+}
+
+.hidden {
+  display: none;
 }

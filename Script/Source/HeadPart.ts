@@ -25,7 +25,6 @@ namespace Script {
         super();
         this.serialize();
         
-  
         // Don't start when running in editor
         if (fc.Project.mode == fc.MODE.EDITOR)
           return;

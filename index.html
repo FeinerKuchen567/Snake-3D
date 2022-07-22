@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
+<head>
         <title>Snake-3D</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="styles.css" />
@@ -78,21 +78,26 @@
         <!--Canvas for FUDGE to render to-->
         <canvas class="fullscreen">
         </canvas>
+        <div id="gameOver" class="hidden">
+            <span>Game Over</span> <br />
+            <span>Score: <span id="yourScore">0</span></span>
+        </div>
         <div id="vui">
-            <div id="score">
-                <label for="score">Score: </label>
-                <input key="score" type="text" value="1" size="3" disabled/>
-            </div>
             <div id="volume">
-                <label for="masterVolume">Gesammt-Lautstärke:</label> 
+                <span>Lautstärke:</span>
+                <label for="masterVolume">Gesammt:</label> 
                 <input key="masterVolume" type="range" value="1" min="0" max="1" step="0.01" />
 
-                <label for="musicVolume">Musik-Lautstärke:</label> 
+                <label for="musicVolume">Musik:</label> 
                 <input key="musicVolume" type="range" value="1" min="0" max="1" step="0.01" />
 
-                <label for="sfxVolume">SFX-Lautstärke:</label> 
+                <label for="sfxVolume">SFX:</label> 
                 <input key="sfxVolume" type="range" value="1" min="0" max="1" step="0.01" />
             </div>
+            <div id="score">
+                <label for="score">Score: </label>
+                <input key="score" type="text" value="1" size="3" disabled="" />
+            </div>
         </div>
-    </body>
+</body>
 </html>

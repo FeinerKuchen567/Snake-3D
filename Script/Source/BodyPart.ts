@@ -32,12 +32,12 @@ namespace Script {
         this.nextDirections = _bodyPart.nextDirections;
         this.nextPoints = _bodyPart.nextPoints;
         this.moveActive = _bodyPart.moveActive;
-        this.headDirection = _bodyPart.headDirection;
+        this.headDirection = _bodyPart.headDirection.clone;
         this.inTurn = _bodyPart.inTurn;
         this.toNearestGridPoint = _bodyPart.toNearestGridPoint;
 
-        this.direction = _bodyPart.direction;
-        this.toNextPoint = _bodyPart.toNextPoint;
+        this.direction = _bodyPart.direction.clone;
+        this.toNextPoint = _bodyPart.toNextPoint.clone;
         this.config = _bodyPart.config;
       }
       else {
@@ -70,9 +70,10 @@ namespace Script {
       let posBodyPart: fc.Vector2 = this.node.mtxLocal.translation.toVector2();
       let nearestGridPoint: fc.Vector2 = new fc.Vector2(Math.round(posBodyPart.x), Math.round(posBodyPart.y));
 
+
       if(this.toNearestGridPoint) {
-          this.moveToNearestGridPoint(nearestGridPoint.toVector3());
-          this.toNearestGridPoint = false;
+        this.moveToNearestGridPoint(nearestGridPoint.toVector3());
+        this.toNearestGridPoint = false;
       }
 
       if(this.moveActive) {
@@ -93,6 +94,9 @@ namespace Script {
 
           if(this.toNextPoint.equals(posBodyPart, <number>this.config["speed"])) {
             this.moveToNearestGridPoint(nearestGridPoint.toVector3());
+            if(this.isTail){
+              //console.log(this);
+            }
 
             if(this.nextDirections[0] != undefined)
               this.direction = this.nextDirections.shift();
